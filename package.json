@@ -1,1 +1,0 @@
-{"name":"gulfjobshub-server","version":"1.0.0","private":true,"description":"GulfJobsHub full-stack job portal API using Node.js built-ins and SQLite","scripts":{"start":"node --disable-warning=ExperimentalWarning server.js","test":"node --test test.js"},"engines":{"node":">=22.5.0"}}

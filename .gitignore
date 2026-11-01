@@ -1,0 +1,7 @@
+.env
+.env.*.local
+data/
+gulfjobshub-data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal

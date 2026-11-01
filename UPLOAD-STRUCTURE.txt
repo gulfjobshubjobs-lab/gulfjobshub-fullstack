@@ -1,0 +1,22 @@
+GULFJOBSHUB FULL-STACK ZIP STRUCTURE
+
+IMPORTANT: Keep the server folder and its contents together. Do not move these
+files into the project root:
+  server/server.js
+  server/test.js
+  server/package.json
+  server/Dockerfile
+  server/container-entrypoint.sh
+  server/.env.example
+  server/DEPLOYMENT.md
+  server/CLAMAV-SETUP.txt
+
+The project root separately contains index.html, site.css, site.js, compose.yaml,
+README.txt, robots.txt, sitemap.xml and the Google verification HTML file.
+
+For GitHub web upload, upload the contents of the extracted project root while
+preserving the nested server/ directory. If the upload page lists server.js,
+Dockerfile, package.json and test.js at root instead of under server/, cancel;
+the folder structure has been flattened and must not be committed.
+
+Do not replace or modify the separate existing GitHub Pages repository.

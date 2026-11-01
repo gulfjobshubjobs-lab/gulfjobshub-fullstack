@@ -9,6 +9,8 @@ services:
       NODE_ENV: production
       PORT: "3000"
       DATA_DIR: /data
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Set ADMIN_EMAIL in the root .env file}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in the root .env file}
       REQUIRE_MALWARE_SCAN: "true"
       CLAMSCAN_PATH: /usr/bin/clamscan
     ports:

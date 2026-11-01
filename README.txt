@@ -13,13 +13,16 @@ KEY FEATURES
 - Job alert preferences stored in account; email delivery is not enabled without an email provider.
 - Existing Google verification HTML/meta, robots.txt and sitemap.xml retained.
 
-START
-See `server/DEPLOYMENT.md` for full setup. Requirements: Node.js 22.5+. Set ADMIN_EMAIL, ADMIN_PASSWORD and DATA_DIR, then run `cd server && npm test && npm start`. The server hosts the front end and API on one origin at http://localhost:3000.
+START (DOCKER / CLAMAV)
+See `server/DEPLOYMENT.md` for full setup. For Docker Compose, copy `.env.example` to `.env` in the project root, set a unique ADMIN_EMAIL and ADMIN_PASSWORD (at least 16 characters), then run `docker compose -f compose.yaml up -d --build`. Compose passes these credentials to the server to create the first administrator. Do not commit the real `.env` file. The container installs ClamAV and attempts a signature update at startup; CV uploads are blocked if scanning is unavailable. Docker build and live ClamAV scanning still require verification on the deployment host.
+
+START (LOCAL NODE.JS)
+Requirements: Node.js 22.5+. From the project root, set ADMIN_EMAIL, ADMIN_PASSWORD and DATA_DIR, then run `cd server && npm test && npm start`. The server hosts the front end and API on one origin at http://localhost:3000.
 
 ADMIN
 The first server start creates the admin account from ADMIN_EMAIL and ADMIN_PASSWORD if the email does not already exist. Store credentials in deployment secrets; never place them in public files.
 
 IMPORTANT
-The old GitHub Pages hosting cannot run accounts, database, applications or CV storage. Keep the current live website unchanged until the new backend host and domain are configured and verified. This ZIP does not upload or commit anything to GitHub. Email delivery/verification, password reset, CAPTCHA, malware scanning, external vacancy feeds and independent penetration testing remain deployment/integration work. See TEST-REPORT.txt for exact test scope.
+The old GitHub Pages hosting cannot run accounts, database, applications or CV storage. Keep the current live website unchanged until the new backend host and domain are configured and verified. This ZIP does not upload or commit anything to GitHub. Email delivery/verification, password reset, CAPTCHA, external vacancy feeds and independent penetration testing remain deployment/integration work. ClamAV is configured in the Docker image but its build, signature update and real malware detection have not yet been verified on a deployment host. See TEST-REPORT.txt for exact test scope.
 
 Security notes: API and static responses include CSP and common browser security headers. Login and registration have an in-memory IP rate limit (10 requests per 15 minutes). Use an upstream WAF/rate limiter in production because this local limiter resets on restart and is not shared across multiple instances.

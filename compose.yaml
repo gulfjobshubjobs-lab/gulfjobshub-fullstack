@@ -1,0 +1,20 @@
+services:
+  gulfjobshub:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: gulfjobshub
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATA_DIR: /data
+      REQUIRE_MALWARE_SCAN: "true"
+      CLAMSCAN_PATH: /usr/bin/clamscan
+    ports:
+      - "3000:3000"
+    volumes:
+      - gulfjobshub_data:/data
+
+volumes:
+  gulfjobshub_data:

@@ -1,0 +1,51 @@
+GULFJOBSHUB QA REPORT — 30 OCTOBER 2026 (LATEST BUILD)
+
+PACKAGE
+- FullStack Indeed-style project; 35 files: responsive static front end plus Node.js/SQLite backend.
+- Existing Google verification HTML and meta tag, robots.txt, sitemap.xml retained.
+- No fabricated/sample job listings.
+
+AUTOMATED BACKEND TESTS
+- Runtime: Node.js 22.16.0.
+- `cd server && npm test`: 1 end-to-end suite passed, 0 failures.
+- Employer registration, authenticated vacancy submission, pending-job moderation and public search.
+- Job seeker registration/login, save/unsave, application submission and application history.
+- PDF application CV validation and authorized employer download.
+- Admin-only approval and role restrictions.
+- Duplicate application/email, weak password, invalid login and public admin-role escalation rejected.
+- Unrelated-user application CV access rejected; logout invalidates session.
+- Malformed URL rejected without stopping service.
+- Job alert preferences save/read from signed-in job seeker account; anonymous access rejected. These are preferences only; no email/push delivery is configured.
+- Job-seeker profile preferences save/read from authenticated account.
+- NEW: profile CV upload, listing, owner-only download, delete, PDF signature/size validation and non-PDF rejection tested. Profile CV is private to its owner.
+
+STATIC QA
+- 20 HTML pages scanned; 99 local references; 0 missing local files.
+- Duplicate HTML IDs: 0.
+- JavaScript syntax checks: pass for site.js, account.js, portal.js, server.js and test.js.
+- CSS parser errors: 0.
+- sitemap.xml parses as valid XML.
+- Server hides backend source files from public static access.
+- NEW: HTTP security headers on static pages and API responses: CSP, frame denial, MIME sniffing protection, referrer policy and restrictive permissions policy.
+- NEW: Public login and registration endpoints rate-limited to 10 attempts per source IP per 15-minute window; 429 response includes Retry-After. Regression test passes.
+- Redirect helper pages use meta refresh rather than inline scripts so the strict script-src CSP remains effective.
+- Dockerfile copies project and runs as non-root `node` user; image build itself is not tested.
+
+LOCAL SERVER SMOKE TEST
+- Node server started with test-only credentials and isolated DATA_DIR.
+- `/api/health` returned HTTP 200.
+- Chromium headless attempt against local server timed out after 25 seconds before DOM output; no visual/click-through result.
+
+NOT VERIFIED / EXTERNAL REQUIREMENTS
+- Chromium browser visual, responsive and real click-through testing remains unverified because the installed browser hangs before rendering (25–30 second timeout, no DOM output).
+- Docker is not installed; Docker image build/runtime not tested.
+- No production host, domain, HTTPS reverse proxy, persistent-volume configuration or mail provider credentials supplied.
+- Email verification, password reset, transactional email alerts, CAPTCHA, malware scanning, employer identity verification and independent penetration testing are not included/verified.
+- No external vacancy feeds or automatic company verification.
+- GitHub Pages cannot run this backend. Deploy the full project to Node.js 22+ or a Docker host with persistent storage and configured admin credentials.
+- The live GitHub Pages site was not modified.
+
+REPEAT TESTS
+- From project root: `cd server && npm test`
+- Start: set ADMIN_EMAIL, ADMIN_PASSWORD and DATA_DIR, then run `npm start` from server folder.
+- Deployment instructions: server/DEPLOYMENT.md
